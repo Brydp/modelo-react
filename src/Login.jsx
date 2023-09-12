@@ -1,32 +1,7 @@
-import { Box, Button, Checkbox, Container, FormControl, FormControlLabel, Grid, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, Checkbox, Container, FormControl, FormControlLabel, Grid, TextField, Typography } from '@mui/material';
 import React from 'react'
-import { createMuiTheme, createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-
-const theme = createTheme({
-    palette: {
-        mode: 'light',
-        primary: {
-          main: '#611d98',
-        },
-        secondary: {
-          main: '#501496',
-        },
-        warning: {
-          main: '#523b29',
-        },
-        text: {
-          primary: 'rgba(143,61,239,0.87)',
-          secondary: 'rgba(126,0,255,0.6)',
-          disabled: 'rgba(130,66,191,0.38)',
-          hint: '#633c92',
-        },
-        divider: 'rgba(96,49,160,0.92)',
-      },
-
-});
 
 function Login() {
 
@@ -37,6 +12,8 @@ function Login() {
   const [ erro, setErro ] = useState( false );
   const navigate = useNavigate();
 
+
+    /* Eu realmente não entendi muita coisa dessa parte do codigo, mais creio que daqui 1 ou 2 meses praticando eu consiga.*/
   useEffect( () => {
 
    if( login ) {
@@ -51,7 +28,7 @@ function Login() {
   function Autenticar( evento )
   {
     evento.preventDefault();
-    fetch( "https://api.escuelajs.co/api/v1/auth/login", {
+    fetch( process.env.REACT_APP_BACKEND + "login", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
@@ -59,17 +36,17 @@ function Login() {
         body: JSON.stringify(
             {
                 email: email,
-                password: senha
+                senha: senha
             }
         )
     } )
     .then( (resposta) => resposta.json() )
     .then( ( json ) => {
 
-        if( json.statusCode === 401 ) {
-            setErro( false );
+        if( json.user ) {
+           setLogin( true );
         } else {
-            setLogin( true );
+          setErro( false );
         }
     } )
     .catch( ( erro ) => { setErro( true ) } )
@@ -77,7 +54,6 @@ function Login() {
   }
 
   return (
-    <ThemeProvider theme={theme}>
     <Container component="section" maxWidth="xs">
         <Box sx={{ 
             mt: 20,
@@ -90,6 +66,7 @@ function Login() {
             }}
             >
             <Typography component="h1" variant="h5">Entrar</Typography>
+            { erro && ( <Alert severity="warning">Revise seus dados e tente novamente</Alert>) }
             <Box component="form" onSubmit={Autenticar}>
                 <TextField 
                 type="email" 
@@ -98,7 +75,8 @@ function Login() {
                 margin="normal" 
                 value={email}
                 onChange={ (e) => setEmail( e.target.value) }
-                fullWidth/>
+                fullWidth
+                />
                 <TextField 
                 type="password" 
                 label="Senha" 
@@ -125,7 +103,6 @@ function Login() {
             </Box>
         </Box>
     </Container>
-    </ThemeProvider>
   )
 }
 
