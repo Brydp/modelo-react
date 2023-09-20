@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-function EditaFilme() {
+function EditaRoupa() {
 
     const { id } = useParams();
 
@@ -18,8 +18,9 @@ function EditaFilme() {
     const [ editar, setEditar ] = useState( false );
     const [ erro, setErro ] = useState( false );
 
-    useEffect( () => { 
-        fetch( process.env.REACT_APP_BACKEND + "filmes/" + id , {
+    useEffect( () => {
+        const usuario = localStorage.getItem( "usuario" );
+        fetch( process.env.REACT_APP_BACKEND + "produtos/" + usuario + "/" + id , {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json'
@@ -30,12 +31,12 @@ function EditaFilme() {
         if( !json.status ) {
             setTitulo( json.titulo );
             setDescricao( json.descricao);
-            setAno( json.ano);
-            setDuracao( json.duracao);
+            setAno( json.ano );
+            setDuracao( json.duracao );
             setCategoria( json.categoria);
             setImagem( json.imagem);
         } else {
-            setErro( "Filme não encontrado" );
+            setErro( "Roupa não encontrada" );
         }
     })
         .catch( ( erro ) => { setErro( true ) } )
@@ -44,7 +45,7 @@ function EditaFilme() {
     function Editar( evento ) {
         evento.preventDefault();
 
-        fetch( process.env.REACT_APP_BACKEND + "filmes", {
+        fetch( process.env.REACT_APP_BACKEND + "produtos", {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json'
@@ -53,11 +54,12 @@ function EditaFilme() {
                 {
                     id: id,
                     titulo: titulo,
-                    descricao: descricao,
                     ano: ano,
+                    descricao: descricao,
                     duracao: duracao,
                     imagem: imagem,
-                    categoria: categoria
+                    categoria: categoria,
+                    usuario: localStorage.getItem( "usuario" )
                 }
             )
         } )
@@ -92,7 +94,7 @@ function EditaFilme() {
 
 
                 { erro && ( <Alert severity="warning">{erro}</Alert>)}
-                { editar && ( <Alert severity="success">Filme editado com sucesso</Alert>)}
+                { editar && ( <Alert severity="success">Roupa editada com sucesso</Alert>)}
 
 
                 <Box component="form" onSubmit={Editar}>
@@ -107,8 +109,8 @@ function EditaFilme() {
                     required
                 />
                  <TextField 
-                    type="descricao" 
-                    label="descricao" 
+                    type="text" 
+                    label="Descricao" 
                     variant="filled" 
                     margin="normal" 
                     value={descricao}
@@ -118,7 +120,7 @@ function EditaFilme() {
                 />
                 <TextField 
                     type="text" 
-                    label="ano" 
+                    label="Ano" 
                     variant="filled" 
                     margin="normal" 
                     value={ano}
@@ -128,14 +130,14 @@ function EditaFilme() {
                 />
                 <TextField 
                     type="text" 
-                    label="duracao" 
-                    variant="filled"
+                    label="Duracao" 
+                    variant="filled" 
                     margin="normal" 
-                    fullWidth
                     value={duracao}
                     onChange={ (e) => setDuracao( e.target.value) }
+                    fullWidth
                     required
-                 />
+                />
                  <TextField 
                     type="text" 
                     label="categoria" 
@@ -165,4 +167,4 @@ function EditaFilme() {
   )
 }
 
-export default EditaFilme;
+export default EditaRoupa;

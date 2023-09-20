@@ -5,8 +5,8 @@ import App from "./App"
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Login from './Login';
 import Cadastro from './Cadastro';
-import Filmes from './Filmes';
-import EditaFilme from './components/EditaFilme';
+import Roupas from './Roupas';
+import EditaRoupa from './components/EditaRoupa';
 
 const theme = createTheme({
   palette: {
@@ -44,12 +44,12 @@ const router = createBrowserRouter([
     element: <Cadastro />
   },
   {
-    path: "/filmes",
-    element: <Filmes />
+    path: "/Roupas",
+    element: <Roupas />
   },
   {
     path: "/edicao/:id",
-    element: <EditaFilme />
+    element: <EditaRoupa />
   }
 ]);
 

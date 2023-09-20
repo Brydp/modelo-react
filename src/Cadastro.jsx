@@ -13,7 +13,7 @@ function Cadastro() {
 
   function Cadastrar( evento ) {
     evento.preventDefault();
-    fetch( process.env.REACT_APP_BACKEND + "users", {
+    fetch( process.env.REACT_APP_BACKEND + "usuarios", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
@@ -66,7 +66,7 @@ function Cadastro() {
             flexDirection:"column",
             alignItems:"center"
             }}>
-                <Typography component="h1" variant='h4'>Cadastrar</Typography>
+                <Typography component="h1" variant='h4'>Cadastrar-se</Typography>
 
                 { erro && ( <Alert severity="warning" sx={{ mt: 2, mb: 2 }}>Desculpe tente novamente</Alert> ) }
                 { cadastro && ( <Alert severity="success" sx={{ mt: 2, mb: 2}}>obrigado por se cadastrar</Alert>) }
